@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Star, Award, TrendingUp } from 'lucide-react';
-import { supabase } from '../lib/supabase';
 import type { Testimonial } from '../lib/types';
 
 const defaultTestimonials: Testimonial[] = [
@@ -10,13 +9,8 @@ const defaultTestimonials: Testimonial[] = [
 ];
 
 export default function Testimonials() {
-  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [testimonials] = useState<Testimonial[]>(defaultTestimonials);
   const [filter, setFilter] = useState('All');
-
-  useEffect(() => {
-    supabase.from('testimonials').select('*').order('year', { ascending: false })
-      .then(({ data }) => setTestimonials(data && data.length ? data : defaultTestimonials));
-  }, []);
 
   const filtered = filter === 'All' ? testimonials : testimonials.filter(t => t.course === filter);
 

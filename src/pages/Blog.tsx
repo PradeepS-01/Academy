@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Calendar, User, ArrowRight } from 'lucide-react';
-import { supabase } from '../lib/supabase';
 import type { BlogPost } from '../lib/types';
 
 const defaultPosts: BlogPost[] = [
@@ -10,13 +9,8 @@ const defaultPosts: BlogPost[] = [
 ];
 
 export default function Blog() {
-  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [posts] = useState<BlogPost[]>(defaultPosts);
   const [category, setCategory] = useState('All');
-
-  useEffect(() => {
-    supabase.from('blog_posts').select('*').eq('is_published', true).order('published_at', { ascending: false })
-      .then(({ data }) => setPosts(data && data.length ? data : defaultPosts));
-  }, []);
 
   const categories = ['All', ...new Set(posts.map(p => p.category))];
   const filtered = category === 'All' ? posts : posts.filter(p => p.category === category);

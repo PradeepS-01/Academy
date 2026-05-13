@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Trophy, Award, TrendingUp } from 'lucide-react';
-import { supabase } from '../lib/supabase';
 import type { Achievement } from '../lib/types';
 
 const defaultAchievements: Achievement[] = [
@@ -10,13 +9,8 @@ const defaultAchievements: Achievement[] = [
 ];
 
 export default function Results() {
-  const [achievements, setAchievements] = useState<Achievement[]>([]);
+  const [achievements] = useState<Achievement[]>(defaultAchievements);
   const [filter, setFilter] = useState<number>(new Date().getFullYear());
-
-  useEffect(() => {
-    supabase.from('achievements').select('*').order('year', { ascending: false })
-      .then(({ data }) => setAchievements(data && data.length ? data : defaultAchievements));
-  }, []);
 
   const years = [2024, 2023, 2022];
   const filtered = achievements.filter(a => a.year === filter);

@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { CheckCircle, ArrowRight, Users, Clock, BookOpen, Star, Filter } from 'lucide-react';
-import { supabase } from '../lib/supabase';
 import type { Course } from '../lib/types';
 
 const categories = ['All', 'Medical', 'Engineering', 'Government Jobs'];
@@ -28,13 +27,8 @@ const categoryGradients: Record<string, string> = {
 };
 
 export default function Courses() {
-  const [courses, setCourses] = useState<Course[]>([]);
+  const [courses] = useState<Course[]>(defaultCourses);
   const [selected, setSelected] = useState('All');
-
-  useEffect(() => {
-    supabase.from('courses').select('*').eq('is_active', true)
-      .then(({ data }) => { setCourses(data && data.length ? data : defaultCourses); });
-  }, []);
 
   const filtered = selected === 'All' ? courses : courses.filter((c) => c.category === selected);
 

@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Award, BookOpen, Star, Users, ArrowRight } from 'lucide-react';
-import { supabase } from '../lib/supabase';
 import type { Faculty as FacultyType } from '../lib/types';
 
 const defaultFaculty: FacultyType[] = [
@@ -32,13 +31,8 @@ const avatarColors = [
 ];
 
 export default function Faculty() {
-  const [faculty, setFaculty] = useState<FacultyType[]>([]);
+  const faculty = defaultFaculty;
   const [selected, setSelected] = useState<FacultyType | null>(null);
-
-  useEffect(() => {
-    supabase.from('faculty').select('*').eq('is_active', true)
-      .then(({ data }) => { setFaculty(data && data.length ? data : defaultFaculty); });
-  }, []);
 
   return (
     <div className="pt-20">

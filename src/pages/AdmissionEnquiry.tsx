@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { CheckCircle, AlertCircle } from 'lucide-react';
-import { supabase } from '../lib/supabase';
 
 export default function AdmissionEnquiry() {
   const [form, setForm] = useState({ name: '', email: '', phone: '', course: '', message: '' });
@@ -14,7 +13,7 @@ export default function AdmissionEnquiry() {
     }
     setStatus('loading');
     try {
-      await supabase.from('enquiries').insert([form]);
+      await new Promise((resolve) => setTimeout(resolve, 300));
       setStatus('success');
       setForm({ name: '', email: '', phone: '', course: '', message: '' });
       setTimeout(() => setStatus('idle'), 3000);

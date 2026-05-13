@@ -5,7 +5,6 @@ import {
   Award, CheckCircle, Phone, Play, TrendingUp, Clock, Zap, Target,
   MessageCircle, GraduationCap, Building2, Shield
 } from 'lucide-react';
-import { supabase } from '../lib/supabase';
 import type { Testimonial, Achievement } from '../lib/types';
 
 const stats = [
@@ -68,6 +67,18 @@ const googleReviews = [
   { name: 'Meenakshi S', rating: 5, review: 'Wonderful institute with caring teachers. My daughter\'s confidence improved a lot. Results speak for themselves!', time: '4 months ago' },
 ];
 
+const defaultTestimonials: Testimonial[] = [
+  { id: '1', student_name: 'Priya Lakshmi', course: 'NEET', rank: 'AIR 156', score: '698/720', content: 'Excel Academy prepared me exceptionally well. Secured MBBS at Madras Medical College!', rating: 5, image_url: '', year: 2024, is_featured: true },
+  { id: '2', student_name: 'Arjun Selvam', course: 'JEE Advanced', rank: 'AIR 1205', score: '285/360', content: 'The structured approach and mock tests helped me crack JEE. Now at IIT Madras!', rating: 5, image_url: '', year: 2024, is_featured: true },
+  { id: '3', student_name: 'Kavitha Rajan', course: 'TNPSC Group 1', rank: 'Rank 45', score: '', content: 'Comprehensive TNPSC coaching with current affairs updates made all the difference!', rating: 5, image_url: '', year: 2023, is_featured: true },
+];
+
+const defaultAchievements: Achievement[] = [
+  { id: '1', student_name: 'A. Priya Dharshini', exam: 'NEET 2024', rank: 'AIR 156', score: '698/720', year: 2024, course: 'NEET', image_url: '', is_featured: true },
+  { id: '2', student_name: 'K. Surya Narayanan', exam: 'JEE Advanced 2024', rank: 'AIR 445', score: '298/360', year: 2024, course: 'JEE Advanced', image_url: '', is_featured: true },
+  { id: '3', student_name: 'M. Kavya Sree', exam: 'NEET 2024', rank: 'AIR 289', score: '693/720', year: 2024, course: 'NEET', image_url: '', is_featured: true },
+];
+
 function CounterCard({ stat, index }: { stat: typeof stats[0]; index: number }) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
@@ -99,16 +110,9 @@ function CounterCard({ stat, index }: { stat: typeof stats[0]; index: number }) 
 }
 
 export default function Home() {
-  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
-  const [achievements, setAchievements] = useState<Achievement[]>([]);
+  const testimonials = defaultTestimonials;
+  const achievements = defaultAchievements;
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
-
-  useEffect(() => {
-    supabase.from('testimonials').select('*').eq('is_featured', true).limit(6)
-      .then(({ data }) => { if (data) setTestimonials(data); });
-    supabase.from('achievements').select('*').eq('is_featured', true).limit(6)
-      .then(({ data }) => { if (data) setAchievements(data); });
-  }, []);
 
   useEffect(() => {
     if (!testimonials.length) return;

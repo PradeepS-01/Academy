@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { X } from 'lucide-react';
-import { supabase } from '../lib/supabase';
 import type { GalleryImage } from '../lib/types';
 
 const defaultImages: GalleryImage[] = [
@@ -13,14 +12,9 @@ const defaultImages: GalleryImage[] = [
 ];
 
 export default function Gallery() {
-  const [images, setImages] = useState<GalleryImage[]>([]);
+  const [images] = useState<GalleryImage[]>(defaultImages);
   const [selected, setSelected] = useState<GalleryImage | null>(null);
   const [filter, setFilter] = useState('All');
-
-  useEffect(() => {
-    supabase.from('gallery_images').select('*').eq('is_active', true)
-      .then(({ data }) => setImages(data && data.length ? data : defaultImages));
-  }, []);
 
   const categories = ['All', ...new Set(images.map(i => i.category))];
   const filtered = filter === 'All' ? images : images.filter(i => i.category === filter);
